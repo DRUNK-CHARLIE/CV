@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>姬云翔 — AI 运营专家</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --red:    #E8001A;
+  --black:  #0a0a0a;
+  --grey:   #141414;
+  --grey2:  #1e1e1e;
+  --white:  #f2ede8;
+  --muted:  rgba(242,237,232,0.52);
+  --border: rgba(242,237,232,0.1);
+  --font:   'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--black);color:var(--white);
+  font-family:var(--font);font-size:16px;
+  line-height:1.7;cursor:none;overflow-x:hidden;
+}
+
+/* ── Cursor ── */
+#cur-o{position:fixed;width:34px;height:34px;border:1.5px solid var(--red);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .28s,height .28s,background .28s;}
+#cur-i{position:fixed;width:5px;height:5px;background:var(--red);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);}
+body.hov #cur-o{width:54px;height:54px;background:rgba(232,0,26,.1);}
+
+/* ── Shared ── */
+.sec-pad{padding:110px 10vw;}
+
+/* ════ SECTION LABEL — big, unmissable ════ */
+.s-label{
+  display:flex;align-items:center;gap:18px;
+  margin-bottom:52px;
+}
+.s-label-num{
+  font-size:13px;font-weight:700;
+  letter-spacing:.22em;color:var(--red);
+  text-transform:uppercase;
+  display:flex;align-items:center;gap:12px;
+  white-space:nowrap;
+}
+.s-label-num::before{content:'';width:28px;height:2px;background:var(--red);flex-shrink:0;}
+.s-label-text{
+  font-size:clamp(30px,4vw,48px);
+  font-weight:900;letter-spacing:-.025em;
+  line-height:1;color:var(--white);
+}
+
+/* Wave sep */
+.wave{display:block;width:100%;line-height:0;overflow:hidden;}
+.wave svg{display:block;width:100%;}
+
+/* ════ HERO ════ */
+#hero{
+  min-height:100vh;display:flex;flex-direction:column;
+  justify-content:center;padding:0 10vw 100px;
+  position:relative;overflow:hidden;background:var(--black);
+}
+.ribbon-bg{position:absolute;inset:0;pointer-events:none;overflow:hidden;}
+.ribbon-bg svg{position:absolute;width:130%;height:130%;top:-15%;left:-15%;opacity:.06;}
+
+.hero-name{
+  font-size:clamp(88px,13vw,176px);font-weight:900;
+  line-height:.92;letter-spacing:-.03em;
+  opacity:0;animation:fadeUp 1s .3s forwards;
+}
+.hero-name .r{color:var(--red);}
+.hero-name .w{color:var(--white);}
+
+.hero-swash{display:block;width:min(520px,78vw);height:16px;margin-top:10px;opacity:0;animation:fadeUp 1s .5s forwards;}
+
+.hero-vision{margin-top:32px;opacity:0;animation:fadeUp 1s .65s forwards;}
+.hero-vision-text{
+  font-size:clamp(22px,2.8vw,36px);font-weight:900;
+  letter-spacing:-.01em;color:var(--white);line-height:1.15;
+}
+.hero-vision-text em{color:var(--red);font-style:normal;}
+
+.hero-tagline-wrap{margin-top:32px;max-width:780px;opacity:0;animation:fadeUp 1s .82s forwards;}
+.hero-eyebrow{font-size:11px;font-weight:500;letter-spacing:.24em;color:var(--red);text-transform:uppercase;margin-bottom:16px;}
+.hero-tagline-main{font-size:16px;font-weight:300;line-height:1.95;color:var(--muted);border-left:2.5px solid var(--red);padding-left:22px;}
+.hero-tagline-main strong{color:var(--white);font-weight:700;}
+
+.hero-chain{display:flex;align-items:flex-start;flex-wrap:wrap;gap:0;margin-top:40px;opacity:0;animation:fadeUp 1s 1s forwards;}
+.hc-node{display:flex;flex-direction:column;align-items:center;gap:8px;}
+.hc-dot{width:10px;height:10px;border-radius:50%;background:var(--red);flex-shrink:0;}
+.hc-label{font-size:13px;font-weight:500;color:var(--white);padding:10px 20px;border:1px solid var(--border);background:var(--grey);white-space:nowrap;}
+.hc-desc{font-size:11px;font-weight:300;color:var(--muted);text-align:center;white-space:nowrap;line-height:1.5;padding:0 4px;}
+.hc-arrow{font-size:18px;color:var(--red);padding:0 6px;margin-bottom:28px;flex-shrink:0;}
+
+.hero-scroll{position:absolute;right:6vw;bottom:56px;writing-mode:vertical-rl;display:flex;align-items:center;gap:10px;font-size:9px;font-weight:400;letter-spacing:.22em;color:var(--muted);text-transform:uppercase;opacity:0;animation:fadeIn 1s 1.8s forwards;}
+.hero-scroll::after{content:'';width:1px;height:56px;background:var(--red);transform:scaleY(0);transform-origin:top;animation:lineDown 1s 2.1s ease forwards;}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:none}}
+@keyframes fadeIn{to{opacity:1}}
+@keyframes lineDown{to{transform:scaleY(1)}}
+
+/* ════ EXPERIENCE ════ */
+#exp-hd{padding:100px 10vw 0;background:var(--grey);}
+.exp-chapter{
+  display:grid;grid-template-columns:240px 1fr;
+  gap:72px;padding:96px 10vw;
+  border-top:1px solid var(--border);
+  position:relative;overflow:hidden;
+}
+.exp-chapter:nth-child(odd){background:var(--grey);}
+.exp-chapter:nth-child(even){background:var(--black);}
+.ch-bg{position:absolute;right:-10px;top:50%;transform:translateY(-50%);font-size:260px;font-weight:900;line-height:1;color:rgba(255,255,255,.022);letter-spacing:-.05em;pointer-events:none;user-select:none;}
+.exp-meta{padding-top:6px;position:sticky;top:60px;align-self:start;}
+.exp-period{font-size:13px;font-weight:500;letter-spacing:.12em;color:var(--red);margin-bottom:14px;}
+.exp-co{font-size:22px;font-weight:900;line-height:1.2;margin-bottom:6px;}
+.exp-co-sub{font-size:13px;font-weight:300;color:var(--muted);line-height:1.6;}
+
+.role-badge{display:inline-flex;align-items:center;background:var(--red);color:var(--white);font-size:11px;font-weight:700;letter-spacing:.18em;padding:7px 16px;margin-bottom:28px;}
+.ctx-box{border-left:3px solid var(--red);padding:14px 18px;background:rgba(232,0,26,.06);margin-bottom:28px;}
+.ctx-box p{font-size:14px;font-weight:300;color:var(--muted);font-style:italic;line-height:1.85;}
+
+.mod-block{border:1px solid var(--border);margin-bottom:18px;}
+.mod-head{display:flex;align-items:center;gap:14px;padding:13px 18px;background:rgba(255,255,255,.03);border-bottom:1px solid var(--border);}
+.mod-num{font-size:11px;font-weight:700;color:var(--red);letter-spacing:.14em;}
+.mod-ttl{font-size:14px;font-weight:600;letter-spacing:.04em;color:var(--white);}
+.mod-body{padding:18px;display:flex;flex-direction:column;gap:13px;}
+.mod-pt{display:flex;gap:12px;font-size:14px;font-weight:300;color:var(--muted);line-height:1.85;}
+.mod-pt::before{content:'→';color:var(--red);flex-shrink:0;font-size:13px;margin-top:4px;}
+.mod-pt.ctx-note{font-style:italic;font-size:13px;border-left:2px solid var(--border);padding-left:12px;}
+.mod-pt.ctx-note::before{display:none;}
+.res-bar{display:flex;align-items:stretch;border-top:1px solid var(--border);}
+.res-lbl{background:var(--red);color:var(--white);font-size:11px;font-weight:700;letter-spacing:.14em;padding:11px 14px;display:flex;align-items:center;flex-shrink:0;}
+.res-txt{padding:11px 16px;font-size:13px;font-weight:500;letter-spacing:.05em;color:var(--white);display:flex;align-items:center;line-height:1.55;}
+
+/* ════ SKILLS ════ */
+.skills-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:0;}
+.s-tile{background:var(--grey2);padding:40px 28px;position:relative;overflow:hidden;cursor:none;}
+.s-tile::after{content:'';position:absolute;inset:0;background:var(--red);transform:translateY(100%);transition:transform .42s cubic-bezier(.16,1,.3,1);z-index:0;}
+.s-tile:hover::after{transform:translateY(0);}
+.s-tile-inner{position:relative;z-index:1;}
+.s-tile-en{font-size:11px;font-weight:700;letter-spacing:.2em;color:var(--red);margin-bottom:10px;transition:color .3s;}
+.s-tile:hover .s-tile-en{color:rgba(255,255,255,.4);}
+.s-tile-name{font-size:20px;font-weight:700;margin-bottom:14px;transition:color .3s;}
+.s-tile-tags{display:flex;flex-wrap:wrap;gap:6px;}
+.s-tag{font-size:12px;font-weight:300;color:var(--muted);border:1px solid var(--border);padding:4px 11px;transition:all .3s;}
+.s-tile:hover .s-tag{border-color:rgba(255,255,255,.3);color:var(--white);}
+
+/* ════ EDUCATION ════ */
+.edu-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:0;max-width:860px;}
+.edu-main{background:var(--grey2);padding:48px 44px;min-height:200px;display:flex;flex-direction:column;justify-content:space-between;border:1px solid var(--border);}
+.edu-school{font-size:30px;font-weight:900;letter-spacing:-.02em;margin-bottom:10px;}
+.edu-degree{font-size:15px;font-weight:300;color:var(--muted);margin-bottom:4px;}
+.edu-year{font-size:13px;font-weight:500;letter-spacing:.14em;color:var(--red);}
+.edu-lang{background:var(--grey2);padding:48px 44px;min-height:200px;display:flex;flex-direction:column;justify-content:center;border:1px solid var(--border);}
+.edu-lang-lbl{font-size:11px;font-weight:700;letter-spacing:.18em;color:var(--red);margin-bottom:10px;}
+.edu-lang-val{font-size:20px;font-weight:700;margin-bottom:6px;}
+.edu-lang-sub{font-size:13px;font-weight:300;color:var(--muted);line-height:1.6;}
+
+/* ════ FOOTER ════ */
+footer{background:var(--grey);padding:56px 10vw 72px;border-top:1px solid var(--border);}
+.ft-name{font-size:34px;font-weight:900;letter-spacing:-.02em;margin-bottom:24px;}
+.ft-name .r{color:var(--red);}
+.ft-name .w{color:var(--white);}
+.ft-contacts{display:flex;flex-wrap:wrap;gap:28px;}
+.ft-item{display:flex;align-items:center;gap:12px;font-size:15px;font-weight:400;color:var(--muted);transition:color .2s;cursor:none;}
+.ft-item:hover{color:var(--red);}
+.ft-icon{width:36px;height:36px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:border-color .2s,background .2s;}
+.ft-item:hover .ft-icon{border-color:var(--red);background:rgba(232,0,26,.12);}
+.ft-icon svg{width:17px;height:17px;fill:currentColor;}
+
+/* ── Reveal ── */
+.reveal{opacity:0;transform:translateY(44px);transition:opacity .85s cubic-bezier(.16,1,.3,1),transform .85s cubic-bezier(.16,1,.3,1);}
+.reveal.visible{opacity:1;transform:none;}
+.d1{transition-delay:.08s}.d2{transition-delay:.17s}.d3{transition-delay:.27s}
+
+/* ── Responsive ── */
+@media(max-width:880px){
+  .sec-pad{padding:72px 7vw}
+  #hero{padding:0 7vw 80px}
+  .skills-grid{grid-template-columns:1fr 1fr}
+  .exp-chapter{grid-template-columns:1fr;gap:22px;padding:64px 7vw}
+  .edu-grid{grid-template-columns:1fr}
+  #exp-hd{padding:72px 7vw 0}
+  .hero-chain{flex-direction:column;align-items:flex-start}
+  .hc-arrow{transform:rotate(90deg);margin:0;padding:4px 0}
+  .s-label-text{font-size:clamp(26px,6vw,36px)}
+}
+</style>
+</head>
+<body>
+
+<div id="cur-o"></div>
+<div id="cur-i"></div>
+
+<!-- ══════════════ HERO ══════════════ -->
+<section id="hero">
+  <div class="ribbon-bg">
+    <svg viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <path fill="none" stroke="#E8001A" stroke-width="140" stroke-linecap="round" d="M-100,620 Q200,160 550,380 Q870,580 1060,80 Q1150,-60 1400,210"/>
+      <path fill="none" stroke="#E8001A" stroke-width="140" stroke-linecap="round" opacity=".45" d="M-100,820 Q300,350 640,550 Q940,730 1130,300 Q1215,145 1400,440"/>
+      <path fill="none" stroke="#f2ede8" stroke-width="44" stroke-linecap="round" opacity=".38" d="M-100,660 Q220,200 560,400 Q878,590 1070,100 Q1155,-50 1400,230"/>
+    </svg>
+  </div>
+
+  <div class="hero-name"><span class="r">姬</span><span class="w">云翔</span></div>
+  <svg class="hero-swash" viewBox="0 0 520 16" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,8 Q76,1 172,11 Q298,22 422,6 Q484,2 520,8" fill="none" stroke="#E8001A" stroke-width="2.6" stroke-linecap="round"/>
+  </svg>
+
+  <div class="hero-vision">
+    <div class="hero-vision-text">能落地 <em>version</em>，更注重 <em>vision</em></div>
+  </div>
+
+  <div class="hero-tagline-wrap">
+    <div class="hero-eyebrow">AI 运营专家 &nbsp;·&nbsp; 10年企业数字化运营</div>
+    <p class="hero-tagline-main">
+      <strong>10年企业级数字化运营经验，专注于企业实际场景的 AI / 自动化落地。</strong><br>
+      主导自动化 / 商机增长 / 客户成功体系的从 0 到 1 完整建设，推动跨职能团队协同完成流程变革。
+    </p>
+  </div>
+
+  <div class="hero-chain">
+    <div class="hc-node">
+      <div class="hc-dot"></div>
+      <div class="hc-label">识别组织效率卡点</div>
+      <div class="hc-desc">发现人工瓶颈与自动化机会</div>
+    </div>
+    <span class="hc-arrow">→</span>
+    <div class="hc-node">
+      <div class="hc-dot"></div>
+      <div class="hc-label">设计体系方案</div>
+      <div class="hc-desc">需求转化为可落地解决方案</div>
+    </div>
+    <span class="hc-arrow">→</span>
+    <div class="hc-node">
+      <div class="hc-dot"></div>
+      <div class="hc-label">协调多方利益推动落地</div>
+      <div class="hc-desc">跨部门对齐，建立多方共识</div>
+    </div>
+    <span class="hc-arrow">→</span>
+    <div class="hc-node">
+      <div class="hc-dot"></div>
+      <div class="hc-label">驱动组织行为变革</div>
+      <div class="hc-desc">培训监测，确保新方式落地</div>
+    </div>
+  </div>
+
+  <div class="hero-scroll">Scroll Down</div>
+</section>
+
+<!-- wave -->
+<div class="wave" style="background:var(--grey)">
+  <svg viewBox="0 0 1440 68" preserveAspectRatio="none" height="68" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,34 Q360,-6 720,34 Q1080,74 1440,34 L1440,0 L0,0 Z" fill="var(--black)"/>
+    <path d="M0,38 Q360,-2 720,38 Q1080,78 1440,38" fill="none" stroke="#E8001A" stroke-width="2.2" opacity=".6"/>
+  </svg>
+</div>
+
+<!-- ══════════════ EXPERIENCE ══════════════ -->
+<div id="exp-hd">
+  <div class="s-label reveal">
+    <span class="s-label-num">01</span>
+    <span class="s-label-text">工作经历</span>
+  </div>
+</div>
+
+<!-- e签宝 -->
+<div class="exp-chapter reveal">
+  <div class="ch-bg">01</div>
+  <div class="exp-meta">
+    <div class="exp-period">2019.12 — 至今</div>
+    <div class="exp-co">e签宝</div>
+    <div class="exp-co-sub">杭州天谷信息科技<br>有限公司</div>
+  </div>
+  <div>
+    <div class="role-badge">运营专家</div>
+    <div class="ctx-box">
+      <p>伴随钉钉 / 阿里云生态获客成本持续攀升，传统投入已难以覆盖运营成本。需在不增加人力的前提下，用更低的边际成本持续触达、培育并转化用户。由此主导设计并推动了一套覆盖「线索承接 → 用户培育 → 客户成功」全链路的 AI 自动化运营体系，涉及与销售、产品、财务等多个部门的深度协同。</p>
+    </div>
+
+    <div class="mod-block">
+      <div class="mod-head"><span class="mod-num">一</span><span class="mod-ttl">AI 工具与自动化落地</span></div>
+      <div class="mod-body">
+        <div class="mod-pt">识别外呼承接商机效率低、覆盖率不稳定的瓶颈，主导 RPA 线索自动化方案的端到端推动。协调外呼 / 销售 / 产研三方完成流程标准化设计，推动管理层对「机器替代人工承接」的共识建立，解决销售团队初期的抵触情绪，实现销售线索全量自动化分发。</div>
+        <div class="mod-pt">主导钉钉生态平台结算流程的 RPA 全量替代，将原有多步骤人工财务结算流程完整自动化，消除人工差错风险，释放运营人力投入高价值场景。</div>
+      </div>
+      <div class="res-bar"><span class="res-lbl">RESULT</span><span class="res-txt">替代约 3 名外呼人力，同类线索销售转化率提升 5倍+</span></div>
+    </div>
+
+    <div class="mod-block">
+      <div class="mod-head"><span class="mod-num">二</span><span class="mod-ttl">商机自动培育体系</span></div>
+      <div class="mod-body">
+        <div class="mod-pt">识别「注册用户大量沉默、人工跟进成本高」的核心矛盾，设计并主导基于企业微信的私域运营 + 自动化培育闭环：注册引导入企微 → 多维打标分层 → 差异化旅程自动触发 → 行为数据识别购买意向 → 精准商机自动流转销售。</div>
+        <div class="mod-pt">该机制的关键难点在于推动销售与运营团队就「商机移交标准」达成共识——本质是一次部门协作边界的重新界定。通过与销售负责人多轮对齐、设计透明的数据监测机制，最终实现两个团队的分工解耦：运营负责培育，销售只处理已有明确意向的商机，人效大幅提升。</div>
+      </div>
+      <div class="res-bar"><span class="res-lbl">RESULT</span><span class="res-txt">私域企业用户池累计 10 万+，年常态贡献 GMV 约 300 万+</span></div>
+    </div>
+
+    <div class="mod-block">
+      <div class="mod-head"><span class="mod-num">三</span><span class="mod-ttl">客户成功体系</span></div>
+      <div class="mod-body">
+        <div class="mod-pt">负责外包客服团队的搭建与管理体系建设（团队组建 / 培训课程开发 / 考核 / 激励机制），将高频问题前置至自动化工具解决，建立标准化 Onboarding 流程。</div>
+        <div class="mod-pt">重构销售增购 SOP，引入标准化动作与数据监测机制，将「个人经验驱动」转变为「数据指导行为」，并通过持续培训和过程监测推动销售团队真正执行变革后的工作方式。</div>
+      </div>
+      <div class="res-bar"><span class="res-lbl">RESULT</span><span class="res-txt">新客激活率提升 25%</span></div>
+    </div>
+
+    <div class="mod-block">
+      <div class="mod-head"><span class="mod-num">四</span><span class="mod-ttl">商业化</span></div>
+      <div class="mod-body">
+        <div class="mod-pt">主导 e签宝在钉钉 / 阿里云生态的整体统筹运营，负责生态 GMV 目标达成。基于上述手段实现阿里云生态商机量半年提升 11 倍、阿里云付费客户数同比增长 110%、履期直接创收累计 2000 万+。</div>
+      </div>
+      <div class="res-bar"><span class="res-lbl">RESULT</span><span class="res-txt">阿里云生态商机量半年提升 11 倍 &nbsp;|&nbsp; 付费客户数同比增长 110% &nbsp;|&nbsp; 累计创收 2000 万+</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- 浙江省人力资源服务协会 -->
+<div class="exp-chapter reveal">
+  <div class="ch-bg">02</div>
+  <div class="exp-meta">
+    <div class="exp-period">2017.3 — 2019.12</div>
+    <div class="exp-co">浙江省人力<br>资源服务协会</div>
+    <div class="exp-co-sub">运营经理</div>
+  </div>
+  <div>
+    <div class="role-badge">运营经理</div>
+    <div class="ctx-box">
+      <p>协会传统业务依赖线下活动与人工政策对接，效率低、覆盖面窄。需将政策资源数字化，形成可持续的产品与收入来源。</p>
+    </div>
+    <div class="mod-block">
+      <div class="mod-head"><span class="mod-num">一</span><span class="mod-ttl">「智能政策」产品 0 → 1</span></div>
+      <div class="mod-body">
+        <div class="mod-pt">识别「企业查找适配政策需大量人工对接」的核心痛点，主导「智能政策」产品从 0 到 1 落地——将政策自动匹配概念转化为可交付的数字化解决方案，期间协调产品、技术、政府关系多方资源完成落地。</div>
+        <div class="mod-pt">负责 4 地网上产业园数字化解决方案的甲方对接与全流程交付，主导 3 地线下博览会筹备与招商。</div>
+      </div>
+      <div class="res-bar"><span class="res-lbl">RESULT</span><span class="res-txt">驱动协会线上产品收入增长 300 万+</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- 快乐沃克 -->
+<div class="exp-chapter reveal">
+  <div class="ch-bg">03</div>
+  <div class="exp-meta">
+    <div class="exp-period">2015.10 — 2016.11</div>
+    <div class="exp-co">快乐沃克</div>
+    <div class="exp-co-sub">HR SaaS · 运营专员</div>
+  </div>
+  <div>
+    <div class="role-badge">运营专员</div>
+    <div class="ctx-box">
+      <p>企业初创阶段，负责产品运营、市场推广等 GTM 工作。</p>
+    </div>
+    <div class="mod-block">
+      <div class="mod-head"><span class="mod-num">一</span><span class="mod-ttl">产品冷启动</span></div>
+      <div class="mod-body">
+        <div class="mod-pt">主导产品官网从 0 到 1 上线及迭代，通过用户调研与竞品分析为产品团队输出优化建议；BD 行业讲师资源，组织全国 10+ 场线下培训活动，获取公司第一批种子用户。</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 支付宝 -->
+<div class="exp-chapter reveal">
+  <div class="ch-bg">04</div>
+  <div class="exp-meta">
+    <div class="exp-period">2014.4 — 2015.10</div>
+    <div class="exp-co">支付宝</div>
+    <div class="exp-co-sub">蚂蚁集团</div>
+  </div>
+  <div>
+    <div class="role-badge">新媒体运营专员</div>
+    <div class="ctx-box">
+      <p>智能客服产品上线初期，AI 自助服务渗透率远低于预期，需在不强制推广的前提下降低用户迁移阻力。</p>
+    </div>
+    <div class="mod-block">
+      <div class="mod-head"><span class="mod-num">一</span><span class="mod-ttl">AI 产品渗透率提升</span></div>
+      <div class="mod-body">
+        <div class="mod-pt">深度分析用户触达路径，识别核心阻力在于「用户不知道 AI 能解决此类问题」；设计「将电话咨询行为与服务窗关注绑定」的引导机制，在用户主动触达时自然引流至 AI 自助服务。</div>
+        <div class="mod-pt">策划「服务网红小俊」营销事件，帮助支付宝官微获得历史第二高转发量，同期自助服务渠道关注量显著提升。</div>
+      </div>
+      <div class="res-bar"><span class="res-lbl">RESULT</span><span class="res-txt">推动周均在线服务量降低 100+ 人次，有效释放人工客服产能</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- wave -->
+<div class="wave" style="background:var(--black)">
+  <svg viewBox="0 0 1440 68" preserveAspectRatio="none" height="68" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,0 Q360,68 720,18 Q1080,-32 1440,56 L1440,68 L0,68 Z" fill="var(--grey)"/>
+    <path d="M0,3 Q360,71 720,21 Q1080,-29 1440,59" fill="none" stroke="#E8001A" stroke-width="2.2" opacity=".55"/>
+  </svg>
+</div>
+
+<!-- ══════════════ TOOLS — above education ══════════════ -->
+<section class="sec-pad" style="background:var(--black)">
+  <div class="s-label reveal">
+    <span class="s-label-num">02</span>
+    <span class="s-label-text">工具能力</span>
+  </div>
+  <div class="skills-grid">
+    <div class="s-tile reveal d1">
+      <div class="s-tile-inner">
+        <div class="s-tile-en">AI & AUTOMATION</div>
+        <div class="s-tile-name">AI & 自动化</div>
+        <div class="s-tile-tags">
+          <span class="s-tag">AI 智能体搭建</span>
+          <span class="s-tag">Coze</span>
+          <span class="s-tag">Cursor</span>
+          <span class="s-tag">Claude Code</span>
+        </div>
+      </div>
+    </div>
+    <div class="s-tile reveal d2">
+      <div class="s-tile-inner">
+        <div class="s-tile-en">DATA ANALYTICS</div>
+        <div class="s-tile-name">数据分析</div>
+        <div class="s-tile-tags">
+          <span class="s-tag">MySQL</span>
+          <span class="s-tag">Fine BI</span>
+          <span class="s-tag">神策</span>
+        </div>
+      </div>
+    </div>
+    <div class="s-tile reveal d3">
+      <div class="s-tile-inner">
+        <div class="s-tile-en">METHODOLOGY</div>
+        <div class="s-tile-name">运营方法论</div>
+        <div class="s-tile-tags">
+          <span class="s-tag">PLG / PQL 增长体系</span>
+          <span class="s-tag">CSM 客户成功管理</span>
+          <span class="s-tag">LTC 流程优化</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- wave -->
+<div class="wave" style="background:var(--grey)">
+  <svg viewBox="0 0 1440 60" preserveAspectRatio="none" height="60" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,30 Q360,-10 720,30 Q1080,70 1440,30 L1440,60 L0,60 Z" fill="var(--black)"/>
+    <path d="M0,32 Q360,-8 720,32 Q1080,72 1440,32" fill="none" stroke="#E8001A" stroke-width="2" opacity=".45"/>
+  </svg>
+</div>
+
+<!-- ══════════════ EDUCATION ══════════════ -->
+<section class="sec-pad" style="background:var(--grey)">
+  <div class="s-label reveal">
+    <span class="s-label-num">03</span>
+    <span class="s-label-text">教育背景</span>
+  </div>
+  <div class="edu-grid reveal d1">
+    <div class="edu-main">
+      <div>
+        <div class="edu-school">杭州电子<br>科技大学</div>
+        <div class="edu-degree">工商管理 · 本科</div>
+      </div>
+      <div class="edu-year">2011.9 — 2015.6</div>
+    </div>
+    <div class="edu-lang">
+      <div class="edu-lang-lbl">LANGUAGE</div>
+      <div class="edu-lang-val">英语</div>
+      <div class="edu-lang-sub">CET-4 &nbsp;·&nbsp; 持续提升中</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ FOOTER ══════════════ -->
+<footer>
+  <div class="ft-name"><span class="r">姬</span><span class="w">云翔</span></div>
+  <div class="ft-contacts">
+    <div class="ft-item">
+      <div class="ft-icon">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.32.57 3.58.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1C10.57 21 3 13.43 3 4c0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.24 1.01L6.6 10.8z"/>
+        </svg>
+      </div>
+      158-6915-1725
+    </div>
+    <div class="ft-item">
+      <div class="ft-icon">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+        </svg>
+      </div>
+      543045315@qq.com
+    </div>
+    <div class="ft-item">
+      <div class="ft-icon">
+        <!-- WeChat double-bubble logo -->
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M9.5 4C5.36 4 2 6.92 2 10.5c0 1.96 1.01 3.72 2.6 4.9L4 18l2.88-1.44A8.23 8.23 0 0 0 9.5 17c.34 0 .68-.02 1.01-.06A5.52 5.52 0 0 1 10 14.5C10 11.46 12.91 9 16.5 9c.35 0 .69.02 1.03.06C16.9 6.2 13.5 4 9.5 4zM7 9.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2zm5 0a1 1 0 1 1 0-2 1 1 0 0 1 0 2zM22 14.5C22 11.46 19.54 9 16.5 9S11 11.46 11 14.5 13.46 20 16.5 20c.72 0 1.41-.13 2.04-.37L21 21l-.59-2.54A5.46 5.46 0 0 0 22 14.5zm-7.5 1a1 1 0 1 1 0-2 1 1 0 0 1 0 2zm4 0a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+        </svg>
+      </div>
+      543045315
+    </div>
+  </div>
+</footer>
+
+<script>
+const co=document.getElementById('cur-o'),ci=document.getElementById('cur-i');
+let mx=0,my=0,ox=0,oy=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;ci.style.left=mx+'px';ci.style.top=my+'px';});
+(function loop(){ox+=(mx-ox)*.11;oy+=(my-oy)*.11;co.style.left=ox+'px';co.style.top=oy+'px';requestAnimationFrame(loop);})();
+document.querySelectorAll('.s-tile,.mod-block,.ft-item,.hc-node').forEach(el=>{
+  el.addEventListener('mouseenter',()=>document.body.classList.add('hov'));
+  el.addEventListener('mouseleave',()=>document.body.classList.remove('hov'));
+});
+const ro=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');ro.unobserve(e.target);}});
+},{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
+const rsv=document.querySelector('.ribbon-bg svg');
+window.addEventListener('scroll',()=>{if(rsv)rsv.style.transform=`translateY(${scrollY*.26}px)`;});
+</script>
+</body>
+</html>
